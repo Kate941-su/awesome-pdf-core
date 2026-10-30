@@ -1,0 +1,53 @@
+packages:
+  - apps/*
+  - packages/*
+
+# 依存は常に正確なバージョンで保存する
+saveExact: true
+engineStrict: true
+
+# サプライチェーン対策
+# 公開から 24 時間未満のバージョンはインストールしない
+minimumReleaseAge: 1440
+# 過去より信頼レベル（Trusted Publishing / provenance）が下がった版を拒否する
+trustPolicy: no-downgrade
+# 推移的依存が git / tarball URL から取得されるのを禁止する
+blockExoticSubdeps: true
+
+# postinstall 等のスクリプト実行は許可リスト方式（未記載は拒否）
+strictDepBuilds: true
+allowBuilds:
+  # Node バージョン確認（preinstall）
+  prisma@7.9.1: true
+  # schema-engine バイナリを binaries.prisma.sh から取得（postinstall）
+  "@prisma/engines@7.9.1": true
+  # bullmq → msgpackr の任意のネイティブ高速化。無くても純 JS で動くため、ビルドを許可しない
+  msgpackr-extract@3.0.4: false
+  # next-intl のメッセージ抽出用。プラットフォーム別のビルド済みバイナリ（optionalDependencies）を使うため、
+  # フォールバック（ソースからのビルド・wasm のダウンロード）は実行しない
+  "@swc/core@1.16.20": false
+  "@parcel/watcher@2.6.0": false
+  # wrangler / OpenNext 用。install スクリプトはビルド済みバイナリの検証のみで、無くても optionalDependencies の
+  # バイナリが使われる（cf:build で動作確認済み）
+  esbuild@0.28.2: false
+  workerd@1.20261023.1: false
+
+# 脆弱な推移的依存の上書き（理由は docs/decisions.md）
+overrides:
+  # GHSA-238p-pmpm-9mq7（micromark-extension-math が ^0.16 を要求）
+  katex@<0.18.2: 0.18.10
+  # GHSA-3f6p-5ww8-9rcr / GHSA-rgwj-5xj2-c3m3（prisma CLI が同梱。MySQL は使わないため到達しない）
+  mysql2@<3.23.1: 3.24.6
+  # GHSA-ggr8-5vv4-36mx（@prisma/config が使用。メジャー更新のため DB テストで確認済み）
+  deepmerge-ts@<8.0.0: 8.0.2
+  # 以下は pfpdf 0.3.0 → @vivliostyle/cli 11.1.0 の間接依存（docs/decisions.md 2026-10-30）
+  # GHSA-8r5x-fm3f-whwj / GHSA-p8wg-vrv2-v86f ほか（create コマンド専用で PDF 生成では使われない）
+  handlebars@<4.7.10: 4.7.10
+  # GHSA-cg2g-xh64-v4q7 / GHSA-mrv2-3pqr-j5jr ほか（目次見出しの無害化に使用）
+  dompurify@<3.4.17: 3.4.17
+  # GHSA-5qjj-4xww-7phc
+  valibot@<1.4.2: 1.4.2
+  # GHSA-x7hr-w5r2-h6wg（vfm 経由。pfpdf は HTML を渡すため使われない）
+  prismjs@<1.30.0: 1.30.0
+  # GHSA-5j98-mcp5-4vw2（@opennextjs/cloudflare → @node-minify/core。CLI のみの脆弱性でビルド時のみ使用）
+  glob@>=10.2.0 <10.5.0: 10.5.0

@@ -1,0 +1,17 @@
+{
+  "name": "@awesome-pdf/shared-types",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Shared types and zod schemas for awesome_pdf services",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "zod": "4.6.7"
+  }
+}

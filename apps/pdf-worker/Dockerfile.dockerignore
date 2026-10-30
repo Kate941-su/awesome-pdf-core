@@ -1,0 +1,15 @@
+# pdf-worker イメージ用（BuildKit は Dockerfile と同名の .dockerignore を優先する）。許可リスト方式
+*
+!package.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
+!packages/shared-types/package.json
+!packages/shared-types/LICENSE
+!packages/shared-types/src/
+!apps/pdf-worker/package.json
+!apps/pdf-worker/LICENSE
+!apps/pdf-worker/src/
+
+# テストはイメージに入れない
+**/*.test.ts
+apps/pdf-worker/src/testing/
