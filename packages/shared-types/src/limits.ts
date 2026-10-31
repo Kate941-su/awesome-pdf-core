@@ -43,6 +43,9 @@ export const CREDIT_RULES = {
  */
 export const FREE_MONTHLY_CREDITS = 5;
 
+/** 退会などの前に求める再ログインの有効期間（ログインからこの秒数以内のトークンのみ受け付ける） */
+export const REAUTHENTICATION_MAX_AGE_SECONDS = 10 * 60;
+
 /** Markdown の構造上限（pdf-worker のサニタイザーで強制。api-server の事前チェックにも使える） */
 export const MARKDOWN_STRUCTURE_LIMITS = {
   /** ノードの入れ子の深さ（リスト・引用の多重ネストによる DoS 対策） */

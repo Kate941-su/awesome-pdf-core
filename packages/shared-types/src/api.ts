@@ -121,6 +121,8 @@ export const API_ERROR_CODES = [
   "NO_BILLING_ACCOUNT",
   "TOO_MANY_ASSETS",
   "OUTPUT_EXPIRED",
+  /** 退会など重要な操作の前に、パスワードの再入力（再ログイン）が必要 */
+  "REAUTHENTICATION_REQUIRED",
   "RATE_LIMITED",
   "INTERNAL",
 ] as const;
